@@ -1,0 +1,55 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+bool check(int, int);
+
+int L, N, M, stone[500000+10];
+int main()
+{
+    while(~scanf("%d %d %d", &L, &N, &M)){
+        memset(stone, 0, sizeof(stone));
+        stone[0] = 0;
+        for(int i=1 ; i<=N ; i++)
+            scanf("%d", &stone[i]);
+        stone[N+1] = L;
+        sort(stone, stone+N);
+        if(N>0){
+            int low=0, high=N, mid, ans;
+            while(low<high){
+                mid = (low+high)/2;
+                if(check(stone[mid], M))
+                    high = mid, ans = high;
+                else
+                    low = mid+1, ans = low;
+            }
+            if(N+1>M)
+                printf("%d\n", min(stone[ans], L-stone[ans]));
+            else
+                printf("%d\n", max(stone[ans], L-stone[ans]));
+        }
+        else
+            printf("%d\n", L);
+    }
+    return 0;
+}
+
+bool check(int jumpdis, int times)
+{
+    int ct=1;
+    for(int i=N-1 ; i>=0 ; i--){
+        if(stone[i]==jumpdis && ct<M)
+            return true;
+        else if(stone[i]==jumpdis && ct>=M)
+            return false;
+        else if(stone[i]!=jumpdis && ct>=M)
+            return false;
+        ct++;
+    }
+}
+
+

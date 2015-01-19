@@ -1,0 +1,108 @@
+
+/*
+char pre[30], in[30], curin, curpre, midin, lenin, lenpre;
+struct node{
+    char value;
+    node *left, *right, *parent;
+};
+queue<char> left_tree[60];
+queue<char> right_tree[60];
+
+void recover_left(node*, int);
+void recover_right(node*, int);
+void dfs(node*);
+int main()
+{
+    memset(pre, '\0', sizeof(pre));
+    memset(in, '\0', sizeof(in));
+    while(~scanf("%s %s", pre, in)){
+        node* root = (node*) malloc(sizeof(node));
+        root->parent = NULL, root->left = NULL, root->right = NULL;
+        curin=0, curpre=0, midin=0, lenin = strlen(in), lenpre = strlen(pre);
+       // printf("Before\n");
+        for(int i=0 ; i<lenin ; i++){
+            if(in[i]!=pre[curpre])
+                left_tree[0].push(in[i]);
+            if(in[i]==pre[curpre]){
+                midin = i;
+                curpre++;
+                while(++i<lenin)
+                    right_tree[0].push(in[i]);
+                break;
+            }
+            printf("Times= %d\n", i);
+        }
+        //printf("After\n");
+        recover_left(root, 0);
+        recover_right(root, 0);
+        dfs(root);
+        putchar(10);
+        for(int i=0 ; i<60 ; i++){
+            while(!left_tree[i].empty()) left_tree[i].pop();
+            while(!right_tree[i].empty()) right_tree[i].pop();
+        }
+        memset(pre, '\0', sizeof(pre));
+        memset(in, '\0', sizeof(in));
+    }
+    return 0;
+}
+
+void recover_left(node* rt, int layer)
+{
+    if(!left_tree[layer].empty()){
+        node *newnode = (node*) malloc(sizeof(node));
+        newnode->parent = rt;
+        rt->left = newnode;
+        newnode->value = pre[curpre];
+        printf("Left-->Layer= %d, Left[%d]= %d\n", layer, layer, left_tree[layer].size());
+        while(!left_tree[layer].empty()){
+            if(left_tree[layer].front()!=pre[layer+1])
+                left_tree[layer+1].push(left_tree[layer].front()), left_tree[layer].pop();
+            if(left_tree[layer].front()==pre[layer+1]){
+                left_tree[layer].pop();
+                curpre++;
+                while(!left_tree[layer].empty()){
+                    right_tree[layer+1].push(left_tree[layer].front());
+                    left_tree[layer].pop();
+                }
+            }
+        }
+        recover_left(newnode, layer+1);
+        curpre--;
+        recover_right(newnode, layer+1);
+    }
+}
+
+void recover_right(node* rt, int layer)
+{
+    if(!right_tree[layer].empty()){
+        node *newnode = (node*) malloc(sizeof(node));
+        newnode->parent = rt;
+        rt->right = newnode;
+        newnode->value = pre[curpre];
+        printf("Right-->Layer= %d\n", layer);
+        while(!right_tree[layer].empty()){
+            if(right_tree[layer].front()!=pre[layer+1])
+                right_tree[layer+1].push(right_tree[layer].front()), right_tree[layer].pop();
+            if(right_tree[layer].front()==pre[layer+1]){
+                right_tree[layer].pop();
+                curpre++;
+                while(!right_tree[layer].empty()){
+                    left_tree[layer+1].push(right_tree[layer].front());
+                    right_tree[layer].pop();
+                }
+            }
+        }
+        recover_left(newnode, layer+1);
+        curpre--;
+        recover_right(newnode, layer+1);
+    }
+}
+
+void dfs(node* cur)
+{
+    if(NULL==cur) return;
+    dfs(cur->left);
+    dfs(cur->right);
+    printf("%c", cur->value);
+}*/

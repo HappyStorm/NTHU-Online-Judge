@@ -1,0 +1,48 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int main()
+{
+    int lady, possible, sh=0, ta=0;
+
+    scanf("%d", &lady);
+    int* ladies = (int*) malloc(lady * sizeof(int));
+    int i=0;
+    while(i<lady)
+        scanf("%d", &ladies[i]), i++;
+
+    scanf("%d", &possible);
+    int* myheight = (int*) malloc(possible * sizeof(int));
+    int j=0;
+    while(j<possible){
+        scanf("%d", &myheight[j]), j++;
+    }
+
+
+    for(int k=0; k<possible ; k++){
+        for(int m=0 ; m<lady ; m++){
+            if(*(ladies+m) < *(myheight+k))
+                sh = *(ladies+m);
+            if(*(ladies+m) > *(myheight+k)){
+                ta = *(ladies+m);
+                break;
+            }
+        }
+
+        if(sh==0 && ta==0)
+            printf("X X\n");
+        else if(sh==0 && ta!=0)
+            printf("X %d\n", ta);
+        else if(sh!=0 && ta==0)
+            printf("%d X\n", sh);
+        else
+            printf("%d %d\n", sh, ta);
+        sh=0, ta=0;
+    }
+    free(ladies);
+    free(myheight);
+    return 0;
+}

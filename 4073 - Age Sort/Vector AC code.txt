@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    int num;
+    while(EOF!=scanf("%d", &num)){
+        if(num==0)
+            break;
+
+        vector<int> nums;
+        for(int i=0 ; i<num ; i++){
+            int temp;
+            scanf("%d", &temp);
+            nums.push_back(temp);
+        }
+        sort(nums.begin(), nums.end());
+
+        for(int i=0 ; i<num ; i++)
+            if(i!=num-1)
+                printf("%d ", nums.at(i));
+            else
+                printf("%d\n", nums.at(i));
+    }
+    return 0;
+}

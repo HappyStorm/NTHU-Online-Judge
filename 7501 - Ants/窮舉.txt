@@ -1,0 +1,41 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+    int test;
+    scanf("%d", &test);
+
+    while(test--){
+        int L, mid_L, close, num_ant, shortest, longest, temp;
+        scanf("%d %d", &L, &num_ant);
+
+        int temp_shortest=0, temp_longest=0;
+        for(int i=0 ; i<num_ant ; i++){
+            scanf("%d", &temp);
+            int leftside = temp, rightside = L - temp;
+
+            if(leftside>rightside){
+                if(rightside>temp_shortest)
+                    temp_shortest = rightside;
+                if(leftside>temp_longest)
+                    temp_longest = leftside;
+                }
+            else{
+                if(leftside>temp_shortest)
+                    temp_shortest = leftside;
+                if(rightside>temp_longest)
+                    temp_longest = rightside;
+            }
+        }
+        shortest = temp_shortest, longest = temp_longest;
+        if(L<=0)
+            printf("0 0\n");
+        else
+            printf("%d %d\n", shortest, longest);
+    }
+    return 0;
+}

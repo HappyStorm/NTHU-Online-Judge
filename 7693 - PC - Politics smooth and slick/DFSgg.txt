@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <list>
+#include <cmath>
+#include <cstring>
+#include <cctype>
+using namespace std;
+vector<int> con[1000+5];
+int N, M, a, b, t, talk[1000+5][1000+5], visit[1000+5];
+int ct, check;
+
+int discover(int, int);
+int main()
+{
+    int times=1;
+    while(~scanf("%d %d", &N, &M)){
+        memset(talk, 0, sizeof(talk));
+        memset(visit, 0, sizeof(visit));
+        for(int i=1 ; i<=N ; i++)
+            con[i].clear();
+        for(int i=0 ; i<M ; i++){
+            scanf("%d %d %d", &a, &b, &t);
+            if(t>50){
+                talk[a][b] = 1, talk[b][a] = 1;
+                con[a].push_back(b), con[b].push_back(a);
+            }
+        }
+        check = 0;
+        for(int i=1 ; i<=N ; i++){
+            visit[i] = 1;
+            ct = discover(i, 1);
+            memset(visit, 0, sizeof(visit));
+            if(ct==N)
+                check=1;
+            if(check)
+                break;
+        }
+        if(check)
+            printf("Case #%d: Eight face discovered!\n", times++);
+        else
+            printf("Case #%d: I don't know!\n", times++);
+    }
+    return 0;
+}
+
+int discover(int cur, int people)
+{
+    if(people==N)
+        return people;
+    for(int i=0 ; i<con[cur].size() ; i++){
+        if(talk[cur][con[cur][i]] && !visit[con[cur][i]]){
+            visit[con[cur][i]] = 1;
+            people = max(discover(con[cur][i], people+1), people);
+            if(people==N)
+                return people;
+        }
+    }
+    return people;
+}

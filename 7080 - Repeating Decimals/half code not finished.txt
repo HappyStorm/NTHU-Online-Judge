@@ -1,0 +1,119 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+    int child, parent;
+    while(EOF!=scanf("%d %d", &child, &parent)){
+        int ct = 0, ispoint=1, time=1,r = child % parent, result = child / parent;
+        char cir[3000]={0}, temp[3000]={0}, char reminder[3000]={0};
+
+        // find the whole answer of child divided by parent(to cir[]).
+        int newchild = child;
+        if(r!=0){
+            while(r!=0 && ct < parent){
+                if(result>0){
+                    sprintf(temp, "%d", result);
+                    int templength = strlen(temp);
+                    for(int i=0 ; i<templength ; i++)
+                        cir[ct++] = temp[i];
+                    if(ispoint)
+                        cir[ct++] = '.', ispoint=0;
+                    newchild = r*10;
+                }
+                else{
+                    sprintf(temp, "%d", result), cir[ct++] = temp[0];
+                    if(newchild/parent==0 && ispoint==1)
+                        cir[ct++] = '.', ispoint=0;
+                    newchild = newchild*10;
+                }
+                r = newchild % parent, result = newchild / parent;
+                if(r==0){
+                    if(ispoint)
+                        cir[ct++] = '.';
+                    sprintf(temp, "%d", result), cir[ct++] = temp[0], cir[ct++] = '\0';
+                    break;
+                }
+                if(r!=0 && ct==parent)
+                    sprintf(temp, "%d", result), cir[ct++] = temp[0], cir[ct++] = '\0';
+            }
+        }
+        else{
+            sprintf(temp, "%d", result);
+            int templength = strlen(temp);
+            for(int i=0 ; i<templength ; i++)
+                cir[ct++] = temp[i];
+            cir[ct++] = '.', cir[ct]='\0';
+        }
+
+        // divide the float(to check[]) and int(to big[]).
+        int cirlen = strlen(cir);
+        char check[3000]={0}, big[3000]={0};
+        for(int i=0, j=0, k=0,flag=0 ; i<cirlen ; i++){
+            if(flag)
+                check[j++] = cir[i];
+            else
+                big[k++] = cir[i];
+            if(cir[i]=='.')
+                flag = 1;
+        }
+
+        // find the cycle string(to ans[]) and the length of it(to int circle).
+        int checklength = strlen(check), circle;
+        //printf("%s len=%d\n", check, checklength);
+        char ans[3000]={0};
+        for(int i=0 ; i<checklength ; i++){
+            char cycle[3000]={0};
+            strncpy(cycle, check, i+1);
+            int clength = strlen(cycle);
+            printf("%s i=%d clength=%d\n", cycle, i, clength);
+
+            circle=0;
+            for(int j=i+1, k=0 ; j<checklength ; j++, k++){
+                if(cycle[k] != check[j]){
+                    circle = 0;
+                    break;
+                }
+                else
+                    if(circle<clength)
+                        circle++;
+            }
+            if(circle){
+                strcpy(ans, cycle);
+                break;
+            }
+        }
+
+        //printf("cir =%s\n", cir);
+        //printf("big =%s\n", big);
+        //printf("check =%s\n", check);
+        //printf("ans =%s\n", ans);
+        //printf("\n", check);
+
+        // print the whole answer.
+        if(time)
+            time--;
+        else
+            printf("\n");
+        int anslength = strlen(ans);
+        if(anslength!=0){
+            printf("%d/%d = %s(", child, parent, big);
+            if(anslength>50){
+                for(int i=0 ; i<50 ; i++)
+                    putchar(ans[i]);
+                printf("...)\n");
+            }
+            else
+                printf("%s)\n", ans);
+        }
+        else
+            printf("%d/%d = %s(0)\n", child, parent, cir), circle=1;
+
+        printf("   %d = number of digits in repeating cycle\n", circle);
+    }
+    return 0;
+}

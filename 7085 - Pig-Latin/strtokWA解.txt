@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+bool is_parent(char);
+
+char input[3000000];
+char sentence[100000][1000];
+int main()
+{
+    while(gets(input)!=NULL){
+        char* temp;
+        int ct=0;
+        temp = strtok(input, " ");
+        while(temp!=NULL){
+            int temp_length = strlen(temp);
+            for(int i=0; i<temp_length ; i++)
+                sentence[ct][i] = temp[i];
+            sentence[ct][temp_length]='\0';
+            temp = strtok(NULL, " ");
+            ct++;
+        }
+
+        for(int i=0 ; i<ct ; i++){
+            int length = strlen(sentence[i]);
+            if(isalpha(sentence[i][length-1])){
+                if(is_parent(sentence[i][0]))
+                    strcat(sentence[i], "ay");
+                else{
+                    char* shift = sentence[i]+1;
+                    char first = sentence[i][0];
+                    shift[length-1] = first, shift[length] = '\0';
+                    strcat(shift, "ay");
+                    for(int j=0; j<length+3 ; j++)
+                        sentence[i][j] = shift[j];
+                }
+            }
+            else{
+                if(is_parent(sentence[i][0])){
+                    char last = sentence[i][length-1];
+                    sentence[i][length-1] = '\0';
+                    strcat(sentence[i], "ay");
+                    sentence[i][length+1] = last;
+                }
+                else{
+                    char* shift = sentence[i]+1;
+                    char first = sentence[i][0];
+                    char last = sentence[i][length-1];
+                    shift[length-2] = first, shift[length-1] = '\0';
+                    strcat(shift, "ay");
+                    shift[length+1] = last;
+                    for(int j=0; j<length+3 ; j++)
+                        sentence[i][j] = shift[j];
+                }
+            }
+        }
+
+        for(int i=0 ; i<ct ; i++){
+            if(i!=ct-1)
+                printf("%s ", sentence[i]);
+            else
+                printf("%s\n", sentence[i]);
+        }
+    }
+    return 0;
+}
+
+bool is_parent(char sentence)
+{
+    switch(sentence){
+        case 'a':
+        case 'e':
+        case 'i':
+        case 'o':
+        case 'u':
+        case 'A':
+        case 'E':
+        case 'I':
+        case 'O':
+        case 'U':
+            return true;
+        default:
+            return false;
+    }
+}

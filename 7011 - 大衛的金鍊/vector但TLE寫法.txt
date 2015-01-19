@@ -1,0 +1,61 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int calculate(int, vector<int>);
+
+int main()
+{
+    int test_case, num_case=0;
+    scanf("%d", &test_case);
+
+    while(num_case<test_case){
+        int num_chain, answer=0;
+        scanf("%d", &num_chain);
+
+        vector<int> length;
+
+        for(int i=0 ; i<num_chain ; i++){
+            int temp;
+            scanf("%d", &temp);
+            length.push_back(temp);
+        }
+
+        sort(length.begin(), length.end());
+        reverse(length.begin(), length.end());
+
+        if(num_chain>2)
+            answer = calculate(num_chain, length);
+        else if(num_chain==1)
+            answer = length.at(0);
+        else
+            answer = length.at(0) + length.at(1);
+
+        printf("%d\n", answer);
+        num_case++;
+        length.clear();
+    }
+    return 0;
+}
+
+int calculate(int num_chain, vector<int> length)
+{
+    int answer=0, sum=0;
+
+    for(int i=0 ; i<num_chain-1 ; i++){
+            //vector<int>::iterator flag = length.end();
+            sum = length.at(num_chain-i-1) + length.at(num_chain-i-2);
+            answer = answer + sum;
+            length.pop_back();
+            length.pop_back();
+            length.push_back(sum);
+
+            sort(length.begin(), length.end());
+            reverse(length.begin(), length.end());
+        }
+    return answer;
+}

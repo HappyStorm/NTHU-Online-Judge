@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+typedef struct station{
+    int dis, fuel;
+}Station;
+
+bool cmpbyDis(Station a, Station b)
+{
+    return a.dis<b.dis;
+}
+bool cmpbyFuel(Station a, Station b)
+{
+    return a.fuel>b.fuel;
+}
+
+int main()
+{
+    int N;
+    while(~scanf("%d", &N)){
+        vector<Station> staList;
+        int d, f, totalFuel=0;
+        Station s;
+        for(int i=0 ; i<N ; i++){
+            scanf("%d %d", &d, &f);
+            totalFuel+=f;
+            s.dis = d, s.fuel = f;
+            staList.push_back(s);
+        }
+        long long L, P;
+        scanf("%lld %lld", &L, &P);
+        if(totalFuel+P < L)
+            printf("-1\n");
+        else{
+            for(int i=0 ; i<N ; i++)
+                staList[i].dis = L - staList[i].dis;
+            sort(staList.begin(), staList.end(), cmpbyDis);
+            //for(int i=0 ; i<N ; i++)
+            //    printf("Station[%d] <Location>: %d  <Fuel>: %d\n", i+1, staList[i].dis, staList[i].fuel);
+
+            int start=0, target=P, record=0, times=0, curfuel=P;
+            vector<Station> staStop;
+            while(target<L){
+                //printf("Target= %d\n", target);
+                if(staList[record].dis>=target){
+                    staStop.push_back(staList[record]);
+                    sort(staStop.begin(), staStop.end(), cmpbyFuel);
+                    curfuel = curfuel - (staStop[0].dis - start) + staStop[0].fuel;
+                    start = staStop[0].dis;
+                    //printf("Sta Stop[0].dis: %d\n", staStop[0].dis);
+                    target = staStop[0].dis + curfuel;
+                    //printf("Now Target: %d\n", target);
+                    staStop.erase(staStop.begin());
+                    times++;
+                }
+                else{
+                    staStop.push_back(staList[record]);
+                }
+                record++;
+            }
+            printf("%d\n", times);
+        }
+    }
+    return 0;
+}

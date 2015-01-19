@@ -1,0 +1,77 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+    int child, parent;
+    while(EOF!=scanf("%d %d", &child, &parent)){
+        int quo = child / parent, rem = child % parent;
+        int quotient[3000]={0}, remain[3000]={0};
+        int isrem=0, remstart=0, quostart=0, remend=0, quoend=0;
+        int ct=0, qct=0, rct=0, locate, tqct=0, trct=0;
+        memset(quotient, 0, sizeof(quotient)), memset(remain, 0, sizeof(remain));
+        while(ct++ < parent){
+            //Check if remainder is in remain[].
+            for(int i=0 ; i<rct ; i++)
+                if(remain[i] == rem){
+                    isrem=1;
+                    if(remstart==0 && quostart==0)
+                        remstart = i, quostart = quotient[i], printf("Remstart= %d Quostart= %d\n", remstart, quostart);
+                    else if(remstart!=0){
+                        if(quostart!=quotient[i])
+                            quostart=0, remstart=0;
+                        else
+                            remend = i, printf("Remend= %d \n", remend);
+                    }
+                }
+            if(isrem && tqct==0 && trct==0)
+                tqct = qct, trct = rct;
+            //else
+                remain[rct++] = rem;
+            rem = rem * 10;
+            int pointquo = rem / parent;
+            quotient[qct++] = pointquo;
+            rem = rem % parent;
+            if(rem==0)
+                break;
+        }
+        printf("Qct= %d Rct= %d\n", qct, rct);
+        printf("Now the cycle is: ");
+        for(int i=0 ; i<remend-remstart ; i++)
+            printf("%d", quotient[i]);
+        putchar(10);
+
+
+        if(qct==1)
+            printf("%d/%d = %d.(0)\n   1 = number of digits in repeating cycle\n", child, parent, quo);
+        else{
+            if(isrem){
+                printf("%d/%d = %d.(", child, parent, quo);
+                if(tqct>50){
+                    for(int i=0 ; i<50 ; i++)
+                        printf("%d", quotient[i]);
+                    printf("...)\n");
+                }
+                else{
+                    for(int i=0 ; i<tqct ; i++)
+                        printf("%d", quotient[i]);
+                    printf(")\n");
+                }
+                printf("   %d = number of digits in repeating cycle\n", trct);
+            }
+            else{
+                printf("%d/%d = %d.", child, parent, quo);
+                for(int i=0 ; i<qct ; i++)
+                    printf("%d", quotient[i]);
+                printf("(0)\n");
+                printf("   1 = number of digits in repeating cycle\n");
+            }
+        }
+        putchar(10);
+    }
+    return 0;
+}

@@ -1,0 +1,105 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+struct number{
+    struct number *prev;
+    struct number *next;
+    int value;
+};
+typedef struct number Number;
+
+struct numList{
+    Number *first, *last;
+};
+typedef struct numList NumList;
+
+void insertAfter(NumList*, Number*);
+Number* creatNum(int);
+void Move(NumList*, int, int);
+void show(NumList*);
+
+int main()
+{
+    int num;
+    scanf("%d", &num), getchar();
+    NumList NumberList;
+    NumberList.first = NULL, NumberList.last = NULL;
+    for(int i=1 ; i<=num ; i++)
+        insertAfter(&NumberList, creatNum(i));
+
+    int a, b;
+    char input[10+5]={0};
+    while(scanf("%s", input)){
+        if(!strcmp("Exit", input))
+            break;
+        else if(!strcmp("Move", input)){
+            scanf("%d %d", &a, &b), getchar();
+            Move(&NumberList, a, b);
+        }
+        //memset(input, '\0', sizeof(input));
+    }
+    show(&NumberList);
+    return 0;
+}
+
+void insertAfter(NumList *numberList, Number *newnum)
+{
+    if(numberList->first==NULL){
+        Number* F = (Number*) malloc(sizeof(Number));
+        Number* L = (Number*) malloc(sizeof(Number));
+        F->prev = NULL, F->next = newnum;
+        L->prev = newnum, L->next = NULL;
+        newnum->prev = F, newnum->next = L;
+        numberList->first = F, numberList->last = L;
+    }
+    else{
+        newnum->prev = numberList->last->prev;
+        newnum->next = numberList->last;
+        numberList->last->prev->next = newnum;
+        numberList->last->prev = newnum;
+    }
+}
+
+Number* creatNum(int v)
+{
+    Number* newNum = (Number*) malloc(sizeof(Number));
+    newNum->value = v, newNum->prev = NULL, newNum->next = NULL;
+    return newNum;
+}
+
+void Move(NumList *numberList, int a, int b)
+{
+    Number* NumB = numberList->first->next;
+    Number* NumA;
+    while(NumB->value!=b){
+        if(NumB->value==a)
+            NumA = NumB;
+        NumB = NumB->next;
+    }
+    if(NumA->next!=NumB && NumA!=NumB){
+        NumB->prev->next = numberList->first->next;
+        NumA->next->prev = numberList->first;
+        numberList->first->next->prev = NumB->prev;
+        numberList->first->next = NumA->next;
+        NumA->next = NumB;
+        NumB->prev = NumA;
+    }
+}
+
+void show(NumList* numList)
+{
+    Number* now = numList->first->next;
+    while(now->next!=NULL){
+        if(now->next!=numList->last)
+            printf("%d ", now->value);
+        else
+            printf("%d\n", now->value);
+        now = now->next;
+    }
+}

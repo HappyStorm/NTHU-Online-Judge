@@ -1,0 +1,38 @@
+20 15
+Mary 285
+John 300
+Ben 200
+Alice 250
+Gill 285
+Apple 121
+Tina 212
+Dennis 0
+Edward 0
+Henry 500
+Ken 1000
+Fiona 675
+Michael 378
+Leo 888
+Jordan 666
+Lin 799
+Richard 675
+Gina 600
+Tony 121
+Alan 200
+17
+1
+2
+4
+6
+10
+11
+13
+16
+19
+18
+12
+-1
+-5
+50000
+600
+

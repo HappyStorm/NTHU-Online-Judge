@@ -1,0 +1,2 @@
+3
+If the voltage is U=200V and the current is I=4.5A, which power is generated?

@@ -1,0 +1,96 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <stack>
+#include <map>
+#include <queue>
+#include <vector>
+#include <list>
+using namespace std;
+
+struct card{
+    int id;
+    long long prefix, point;
+};
+struct student{
+    int id, k;
+    long long sum;
+};
+void Mergesort(int, vector<student>&);
+void mymerge(int, int, vector<student>&, vector<student>&, vector<student>&);
+
+int main()
+{
+    long long N, Q, K;
+    while(~scanf("%lld %lld %lld", &N, &Q, &K)){
+        vector<card> allcard;
+        card c;
+        long long temp, sum=0;
+        for(int i=0 ; i<N ; i++){
+            scanf("%lld", &temp);
+            sum+=temp;
+            c.id = i+1, c.point = temp, c.prefix = sum;
+            allcard.push_back(c);
+        }
+        long long A, B, tempsum=0;
+        vector<student> allstudent;
+        student s;
+        for(int i=0 ; i<Q ; i++){
+            scanf("%lld %lld", &A, &B);
+            A-=1, B-=1; // Index.
+            if(A==0)
+                tempsum = allcard[B].prefix;
+            else
+                tempsum = allcard[B].prefix-allcard[A-1].prefix;
+            s.id = i+1, s.sum = tempsum, s.k=0;
+            //printf("S%d Tempsum= %lld\n", i+1, s.sum);
+            allstudent.push_back(s);
+        }
+        vector<student>& students = allstudent;
+        Mergesort(N, students);
+        int aplus=0;
+        for(int i=0 ; i<N ; i++)
+            if(allstudent[i].k>=K)
+            aplus++;
+        printf("%d\n", aplus);
+    }
+    return 0;
+}
+void Mergesort(int n, vector<student>&  allstudent)
+{
+    if(n==1)
+        return;
+    int Lhs = n/2, Rhs = n-Lhs;
+    vector<student> left;
+    vector<student> right;
+
+    for(int i=0 ; i<Lhs ; i++)
+        left.push_back(allstudent[i]);
+    for(int i=0 ; i<Rhs ; i++)
+        right.push_back(allstudent[Lhs+i]);
+
+    Mergesort(Lhs, left);
+    Mergesort(Rhs, right);
+    mymerge(Lhs, Rhs, left, right, allstudent);
+}
+void mymerge(int L, int R, vector<student>& left, vector<student>& right, vector<student>& allstudent)
+{
+    int l=0, r=0, index=0;
+    vector<student>::iterator alliter = allstudent.begin();
+    vector<student>::iterator leftiter = left.begin();
+    vector<student>::iterator rightiter = right.begin();
+
+    while(l<L && r<R){
+        if((*rightiter).sum >= (*leftiter).sum)
+            *alliter = *rightiter, alliter++, rightiter++, index++, r++;
+        else
+            (*leftiter).k += (R-r), *alliter = *leftiter, alliter++, leftiter++, index++, l++;
+    }
+    while(l<L)
+        *alliter = *leftiter, alliter++, leftiter++, index++, l++;
+    while(r<R)
+        *alliter = *rightiter, alliter++, rightiter++, index++, r++;
+}

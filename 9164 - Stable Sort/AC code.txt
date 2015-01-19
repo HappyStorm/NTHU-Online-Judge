@@ -1,0 +1,102 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class people
+{
+    public:
+        people(string, int, int);
+        people();
+        string name;
+        int grade;
+        int flag;
+};
+people::people(string n, int g, int f)
+{
+    name = n;
+    grade = g;
+    flag = f;
+}
+people::people()
+{
+    name="\0";
+    grade=0;
+    flag=0;
+}
+
+bool cmp(people a, people b)
+{
+    if(a.grade<b.grade)
+        return a.grade<b.grade;
+    else if(a.grade>b.grade)
+        return a.grade<b.grade;
+    else{
+        if(a.flag>b.flag)
+            return a.flag<b.flag;
+        else
+            return a.flag>b.flag;
+    }
+}
+void Mergesort(int, people*);
+void my_merge(int, int, people*, people*, people*);
+people peoples[1000005];
+int main()
+{
+    int nums;
+    while(EOF!=scanf("%d", &nums)){
+
+        for(int i=0 ; i<nums ; i++){
+            int grade;
+            char name[20];
+            scanf("%s %d", name, &grade);
+            people p = people((string)name, grade, i);
+            peoples[i] = p;
+        }
+        //sort(peoples.begin(), peoples.end(), cmp);
+        Mergesort(nums, peoples);
+
+        for(int i=0 ; i<nums ; i++){
+            people p = peoples[i];
+            printf("%s %d\n", p.name.c_str(), p.grade);
+        }
+    }
+    return 0;
+}
+
+void Mergesort(int num, people* data)
+{
+    if(num==1)
+        return;
+    int Lhs = num/2, Rhs = num - Lhs;
+    people* left = new people[Lhs];
+    people* right = new people[Rhs];
+
+    for(int i=0 ; i<Lhs ; i++)
+        left[i] = data[i];
+    for(int i=0 ; i<Rhs ; i++)
+        right[i] = data[Lhs+i];
+    Mergesort(Lhs, left);
+    Mergesort(Rhs, right);
+    my_merge(Lhs, Rhs, left, right, data);
+}
+void my_merge(int Lhs, int Rhs, people* left, people* right, people* data)
+{
+    int index=0, l=0, r=0;
+    while(l<Lhs && r<Rhs){
+        if(left[l].grade>right[r].grade)
+            data[index++] = right[r++];
+        else{
+            if(left[l].flag<right[r].flag)
+                data[index++] = left[l++];
+            else
+                data[index++] = right[r++];
+        }
+    }
+    while(l<Lhs)
+        data[index++] = left[l++];
+    while(r<Rhs)
+        data[index++] = right[r++];
+}

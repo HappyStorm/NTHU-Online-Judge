@@ -1,0 +1,77 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+void mysort(int, int*);
+int calculate(int, int*);
+
+int main()
+{
+    int test_case, num_case=0;
+    scanf("%d", &test_case);
+
+    while(num_case<test_case){
+        int num_chain, answer;
+        scanf("%d", &num_chain);
+
+        int* length = (int*) malloc(num_chain * sizeof(int));
+        for(int i=0 ; i<num_chain ; i++){
+            scanf("%d", length+i);
+        }
+
+        mysort(num_chain, length);
+
+        if(num_chain>2)
+            answer = calculate(num_chain, length);
+        else if(num_chain==1)
+            answer = *(length);
+        else
+            answer = *(length) + *(length+1);
+        printf("%d\n", answer);
+        num_case++;
+        free(length);
+    }
+    return 0;
+}
+
+void mysort(int num_chain, int* length)
+{
+    for(int i=0 ; i<num_chain ; i++){
+            for(int j=0 ; j<num_chain-1 ; j++){
+                int temp;
+                if( *(length+j) > *(length+j+1)){
+                    temp = *(length+j);
+                    length[j] = *(length+j+1);
+                    length[j+1] = temp;
+                }
+            }
+        }
+}
+int calculate(int num_chain, int* length)
+{
+    int answer;
+    int sum=0;
+    if(num_chain>2){
+        int* temp = (int*) malloc( (num_chain-1) * sizeof(int));
+
+        for(int i=0 ; i<num_chain-1 ; i++){
+            if(i==0)
+                temp[i] = *(length+i) + *(length+i+1);
+            else
+                temp[i] = *(length+i+1);
+        }
+
+        mysort(num_chain-1, temp);
+
+        sum = sum + length[0] + length[1];
+        answer = calculate(num_chain-1, temp);
+        free(temp);
+        return answer + sum;
+    }
+    else{
+        answer = *(length) + *(length+1);
+        return answer;
+    }
+}

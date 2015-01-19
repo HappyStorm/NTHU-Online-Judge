@@ -1,0 +1,24 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+using namespace std;
+char word[500000];
+int main()
+{
+
+    while(gets(word)!=NULL){
+        char *temp;
+        int times=0;
+
+        temp = strtok(word, "\n\t !""'#$%&()*+,-./0123456789:;<=>?@[\\]^_`{|}~");
+        while(temp!=NULL){
+            if(isalpha(temp[0]))
+               times++;
+            temp = strtok(NULL, "\n\t !""'#$%&()*+,-./0123456789:;<=>?@[\\]^_`{|}~");
+        }
+        printf("%d\n", times);
+    }
+    return 0;
+}

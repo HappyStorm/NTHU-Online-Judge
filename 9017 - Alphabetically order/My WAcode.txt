@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+//Aa Bb Cc Dd ... Yy Zz
+int main()
+{
+    char str1[35]={0}, str2[35]={0};
+    while(EOF!=scanf("%s %s", str1, str2)){
+        char restr1[35]={0}, restr2[35]={0};
+        strcpy(restr1, str1), strcpy(restr2, str2);
+        int len1 = strlen(restr1), len2 = strlen(restr2), biglen = min(len1, len2);
+
+        if(isalpha(restr1[0]) && isalpha(restr2[0])){
+            if(strncmp(restr1, restr2, biglen)>=0){
+                for(int i=0 ; i<biglen ; i++){
+                    if(tolower(restr1[i])>tolower(restr2[i])){
+                       printf("%s %s\n", restr2, restr1);
+                       break;
+                    }
+                    else if(tolower(restr1[i])<tolower(restr2[i])){
+                       printf("%s %s\n", restr1, restr2);
+                       break;
+                    }
+                    else{
+                        if(restr1[i]<restr2[i])
+                            printf("%s %s\n", restr1, restr2);
+                        else
+                            printf("%s %s\n", restr2, restr1);
+                        break;
+                    }
+                }
+            }
+            else{
+                if(restr1[0]<restr2[0])
+                    printf("%s %s\n", restr1, restr2);
+                else
+                    printf("%s %s\n", restr2, restr1);
+            }
+        }
+        else{
+            if(restr1[0]<restr2[0])
+                printf("%s %s\n", restr1, restr2);
+            else
+                printf("%s %s\n", restr2, restr1);
+        }
+    }
+    return 0;
+}

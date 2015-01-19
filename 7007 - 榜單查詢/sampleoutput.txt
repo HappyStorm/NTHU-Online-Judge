@@ -1,0 +1,6 @@
+Query 1: 285
+Mary
+Gill
+Query 2: null
+Query 3: 250
+Alice

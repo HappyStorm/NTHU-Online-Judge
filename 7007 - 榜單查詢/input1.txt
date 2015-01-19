@@ -1,0 +1,9 @@
+5 3
+Mary 285
+John 300
+Ben 200
+Alice 250
+Gill 285
+2
+3
+4

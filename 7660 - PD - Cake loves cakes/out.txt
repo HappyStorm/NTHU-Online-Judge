@@ -1,0 +1,15 @@
+Case 1:
+No
+Yes
+No
+Case 2:
+No
+No
+Case 3:
+No
+No
+No
+Yes
+Yes
+No
+No

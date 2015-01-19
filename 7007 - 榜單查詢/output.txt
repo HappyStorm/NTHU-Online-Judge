@@ -1,0 +1,28 @@
+Query 1: 121
+Apple
+Tony
+Query 2: 1000
+Ken
+Query 3: 888
+Leo
+Query 4: 675
+Richard
+Fiona
+Query 5: 666
+Jordan
+Query 6: 300
+John
+Query 7: 285
+Mary
+Gill
+Query 8: 250
+Alice
+Query 9: null
+Query 10: 0
+Edward
+Dennis
+Query 11: null
+Query 12: null
+Query 13: null
+Query 14: null
+Query 15: null

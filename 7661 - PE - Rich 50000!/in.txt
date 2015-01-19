@@ -1,0 +1,18 @@
+5 3
+kerker 050M500K600
+daiyang 200M100K000
+cake 140M600K200
+ylc 777M777K777
+henry 500M400K300
+daiyang
+ylc
+cake
+5 3
+bruce 001M010K800
+bass 000M005K500
+alan 000M000K500
+daodan 000M000K999
+applejack 000M008K999
+daodan
+bass
+bruce

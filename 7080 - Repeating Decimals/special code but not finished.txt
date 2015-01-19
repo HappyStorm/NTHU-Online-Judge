@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+    int child, parent;
+    while(EOF!=scanf("%d %d", &child, &parent)){
+        int quo = child / parent, rem = child % parent;
+        int isrem=0, isfirst=0;
+        int quotient[3000];
+        int remain[3000];
+
+
+        int ct=0, qct=0, rct=0;
+        while(ct++<parent){
+            //Check if remainder is in remain[].
+            for(int i=0 ; i<rct ; i++)
+                if(remain[i] == rem)
+                    isrem=1;
+            if(isrem)
+                break;
+            else
+                remain[rct++] = rem;
+            rem = rem * 10;
+            int pointquo = rem / parent;
+            quotient[qct++] = pointquo;
+            rem = rem % parent;
+            if(rem==0)
+                break;
+        }
+
+        if(isfirst>0)
+            printf("\n\n"), isfirst=1;
+
+        if(qct==1)
+            printf("%d/%d = %d.(0)\n", child, parent, quo);
+        else{
+            printf("%d/%d = %d.(", child, parent, quo);
+            if(qct>50){
+                for(int i=0 ; i<50 ; i++)
+                    printf("%d", quotient[i]);
+                printf("...)\n");
+            }
+            else{
+                for(int i=0 ; i<qct ; i++)
+                    printf("%d", quotient[i]);
+                printf(")\n");
+            }
+        }
+        printf("   %d = number of digits in repeating cycle\n", rct);
+    }
+    return 0;
+}
